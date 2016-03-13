@@ -1,2 +1,2 @@
-# manoc-agent-dhcpd
-Manoc agent for ISC DHCPD
+# manoc-agents-collection
+Collection of Manoc agents (for ISC DHCPD, Windows DC and more)
