@@ -4,8 +4,9 @@ import re
 import time
 import ConfigParser
 import json
-import urllib2
-import base64
+
+#from manoc_agents.common.requests import GET
+
 class DHCPReservation(object):
    
     def __init__(self, name, hostname, ipaddr, hwaddr):

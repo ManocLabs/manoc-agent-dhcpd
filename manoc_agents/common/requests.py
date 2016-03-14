@@ -1,3 +1,7 @@
+import urllib2
+import base64
+import json
+
 class PreemptiveBasicAuthHandler(urllib2.HTTPBasicAuthHandler):
     '''Preemptive basic auth.
 
