@@ -1,2 +1,3 @@
-# manoc-agents-collection
-Collection of Manoc agents (for ISC DHCPD, Windows DC and more)
+# Manoc Agents collection 
+
+Collection of Python Manoc agents (for ISC DHCPD, Windows logs and more)
