@@ -1,0 +1,61 @@
+
+host PC021010097 {
+        hardware ethernet 00:00:00:ac:00:7a;
+        fixed-address 172.21.10.97;
+        option host-name "PC021010097.mydomain.org";
+}
+
+host PC021010098 {
+        hardware ethernet 00:00:00:ac:01:67;
+        fixed-address 172.21.10.98;
+        option host-name "PC021010098.mydomain.org";
+}
+
+host PC021010099 {
+        hardware ethernet 00:00:00:d2:2f:b2;
+        fixed-address 172.21.10.99;
+        option host-name "PC021010099.mydomain.org";
+}
+
+host PC021010100 {
+        hardware ethernet 00:00:00:42:1e:57;
+        fixed-address 172.21.10.100;
+        option host-name "PC021010100.mydomain.org";
+}
+
+host PC021010101 {
+        hardware ethernet 00:00:00:ac:1c:15;
+        fixed-address 172.21.10.101;
+        option host-name "PC021010101.mydomain.org";
+}
+host PC021010102 {
+        hardware ethernet 00:00:00:ac:00:7a;
+        fixed-address 172.21.10.102;
+        option host-name "PC021010102.mydomain.org";
+}
+
+host PC021010103 {
+        hardware ethernet 00:00:00:ac:01:67;
+        fixed-address 172.21.10.103;
+}
+
+host PC021010104 {
+        hardware ethernet 00:00:00:d2:2f:b2;
+        fixed-address 172.21.10.104;
+}
+
+host PC021010105 {
+        hardware ethernet 00:00:00:42:1e:57;
+        fixed-address 172.21.10.105;
+        option host-name "PC021010105.mydomain.org";
+}
+
+host PC021010106 {
+        hardware ethernet 00:00:00:ac:1c:15;
+        fixed-address 172.21.10.106;
+        option host-name "PC021010106.mydomain.org";
+}
+
+
+
+

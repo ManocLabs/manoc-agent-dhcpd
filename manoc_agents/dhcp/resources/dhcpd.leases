@@ -1,0 +1,273 @@
+lease 172.201.254.246 {
+  starts 4 2012/12/13 09:05:52;
+  ends 4 2012/12/13 09:07:52;
+  tstp 4 2012/12/13 09:07:52;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:00;
+}
+lease 172.21.254.244 {
+  starts 4 2013/07/11 13:37:58;
+  ends 0 2013/07/21 13:37:58;
+  tstp 0 2013/07/21 13:37:58;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:01;
+}
+lease 172.21.254.243 {
+  starts 6 2013/09/07 12:27:37;
+  ends 2 2013/09/17 12:27:37;
+  tstp 2 2013/09/17 12:27:37;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:03;
+}
+lease 172.21.254.240 {
+  starts 1 2013/11/11 09:58:44;
+  ends 4 2013/11/21 09:58:44;
+  tstp 4 2013/11/21 09:58:44;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:04;
+}
+lease 172.21.254.249 {
+  starts 1 2013/12/23 11:12:49;
+  ends 4 2014/01/02 11:12:49;
+  tstp 4 2014/01/02 11:12:49;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:05;
+}
+lease 172.21.254.236 {
+  starts 1 2014/01/06 17:19:23;
+  ends 4 2014/01/16 17:19:23;
+  tstp 4 2014/01/16 17:19:23;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:06;
+}
+lease 172.21.254.245 {
+  starts 2 2014/01/07 08:14:49;
+  ends 5 2014/01/17 08:14:49;
+  tstp 5 2014/01/17 08:14:49;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:07;
+}
+lease 172.21.254.247 {
+  starts 4 2014/01/09 09:25:07;
+  ends 0 2014/01/19 09:25:07;
+  tstp 0 2014/01/19 09:25:07;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:08;
+}
+lease 172.21.254.241 {
+  starts 4 2014/01/09 12:45:58;
+  ends 0 2014/01/19 12:45:58;
+  tstp 0 2014/01/19 12:45:58;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:09;
+}
+lease 172.21.254.238 {
+  starts 5 2014/01/10 13:53:35;
+  ends 1 2014/01/20 13:53:35;
+  tstp 1 2014/01/20 13:53:35;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:0a;
+}
+lease 172.21.254.235 {
+  starts 1 2014/01/13 08:32:24;
+  ends 4 2014/01/23 08:32:24;
+  tstp 4 2014/01/23 08:32:24;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:0b;
+}
+lease 172.21.254.234 {
+  starts 1 2014/01/13 10:24:42;
+  ends 4 2014/01/23 10:24:42;
+  tstp 4 2014/01/23 10:24:42;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:0c;
+}
+lease 172.21.254.239 {
+  starts 1 2014/01/13 13:43:54;
+  ends 4 2014/01/23 13:43:54;
+  tstp 4 2014/01/23 13:43:54;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:0d;
+}
+lease 172.21.254.250 {
+  starts 1 2014/01/13 15:32:15;
+  ends 4 2014/01/23 15:32:15;
+  tstp 4 2014/01/23 15:32:15;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:0e;
+}
+lease 172.21.254.248 {
+  starts 2 2014/01/14 14:04:45;
+  ends 5 2014/01/24 14:04:45;
+  tstp 5 2014/01/24 14:04:45;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:0f;
+}
+lease 172.21.254.237 {
+  starts 2 2014/01/14 14:04:48;
+  ends 5 2014/01/24 14:04:48;
+  tstp 5 2014/01/24 14:04:48;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:10;
+}
+lease 172.21.254.242 {
+  starts 3 2014/01/15 00:45:57;
+  ends 6 2014/01/25 00:45:57;
+  tstp 6 2014/01/25 00:45:57;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:12;
+}
+lease 172.21.254.224 {
+  starts 6 2014/06/28 02:11:01;
+  ends 2 2014/07/08 02:11:01;
+  tstp 2 2014/07/08 02:11:01;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:13;
+}
+lease 172.21.254.231 {
+  starts 4 2014/10/09 07:49:02;
+  ends 0 2014/10/19 07:49:02;
+  tstp 0 2014/10/19 07:49:02;
+  binding state free;
+  hardware ethernet 00:00:00:00:00:14;
+}
+lease 172.21.254.220 {
+  starts 6 2016/03/05 16:41:23;
+  ends 2 2016/03/15 16:41:23;
+  cltt 6 2016/03/05 16:41:23;
+  binding state active;
+  next binding state free;
+  hardware ethernet 00:00:00:00:00:15;
+  option agent.circuit-id "ap-central";
+}
+lease 172.21.254.218 {
+  starts 6 2016/03/05 17:44:45;
+  ends 2 2016/03/15 17:44:45;
+  cltt 6 2016/03/05 17:44:45;
+  binding state active;
+  next binding state free;
+  hardware ethernet 00:00:00:00:00:16;
+  option agent.circuit-id "ap-central";
+}
+lease 172.21.254.219 {
+  starts 6 2016/03/05 23:03:45;
+  ends 2 2016/03/15 23:03:45;
+  cltt 6 2016/03/05 23:03:45;
+  binding state active;
+  next binding state free;
+  hardware ethernet 00:00:00:00:00:17;
+  option agent.circuit-id "ap-central";
+}
+lease 172.21.254.229 {
+  starts 0 2016/03/06 08:06:51;
+  ends 3 2016/03/16 08:06:51;
+  cltt 0 2016/03/06 08:06:51;
+  binding state active;
+  next binding state free;
+  hardware ethernet 00:00:00:00:00:18;
+  option agent.circuit-id "ap-central";
+}
+lease 172.21.254.228 {
+  starts 0 2016/03/06 19:16:49;
+  ends 3 2016/03/16 19:16:49;
+  cltt 0 2016/03/06 19:16:49;
+  binding state active;
+  next binding state free;
+  hardware ethernet 00:00:00:00:00:19;
+  option agent.circuit-id "ap-central";
+}
+lease 172.21.254.232 {
+  starts 1 2016/03/07 05:57:00;
+  ends 4 2016/03/17 05:57:00;
+  cltt 1 2016/03/07 05:57:00;
+  binding state active;
+  next binding state free;
+  hardware ethernet 00:00:00:00:00:1a;
+  option agent.circuit-id "ap-central";
+}
+lease 172.21.254.233 {
+  starts 1 2016/03/07 05:57:00;
+  ends 4 2016/03/17 05:57:00;
+  cltt 1 2016/03/07 05:57:00;
+  binding state active;
+  next binding state free;
+  hardware ethernet 00:00:00:00:00:1b;
+  option agent.circuit-id "ap-central";
+}
+lease 172.21.254.227 {
+  starts 1 2016/03/07 11:29:09;
+  ends 4 2016/03/17 11:29:09;
+  cltt 1 2016/03/07 11:29:09;
+  binding state active;
+  next binding state free;
+  hardware ethernet 00:00:00:00:00:1c;
+  option agent.circuit-id "ap-central";
+}
+lease 172.21.254.222 {
+  starts 1 2016/03/07 20:16:59;
+  ends 4 2016/03/17 20:16:59;
+  cltt 1 2016/03/07 20:16:59;
+  binding state active;
+  next binding state free;
+  hardware ethernet 00:00:00:00:00:1d;
+  option agent.circuit-id "ap-central";
+}
+lease 172.21.254.230 {
+  starts 2 2016/03/08 07:49:02;
+  ends 5 2016/03/18 07:49:02;
+  cltt 2 2016/03/08 07:49:02;
+  binding state active;
+  next binding state free;
+  hardware ethernet 00:00:00:00:00:1e;
+  option agent.circuit-id "ap-central";
+}
+lease 172.21.254.223 {
+  starts 2 2016/03/08 09:56:25;
+  ends 5 2016/03/18 09:56:25;
+  cltt 2 2016/03/08 09:56:25;
+  binding state active;
+  next binding state free;
+  hardware ethernet 00:00:00:00:00:1f;
+  option agent.circuit-id "ap-central";
+}
+lease 172.21.254.225 {
+  starts 2 2016/03/08 10:18:00;
+  ends 5 2016/03/18 10:18:00;
+  cltt 2 2016/03/08 10:18:00;
+  binding state active;
+  next binding state free;
+  hardware ethernet 00:00:00:00:00:20;
+  option agent.circuit-id "ap-central";
+}
+lease 172.21.254.221 {
+  starts 2 2016/03/08 13:18:25;
+  ends 5 2016/03/18 13:18:25;
+  cltt 2 2016/03/08 13:18:25;
+  binding state active;
+  next binding state free;
+  hardware ethernet  00:00:00:00:00:21;
+  option agent.circuit-id "ap-central";
+}
+lease 172.21.254.226 {
+  starts 3 2016/03/09 13:57:24;
+  ends 6 2016/03/19 13:57:24;
+  cltt 3 2016/03/09 13:57:24;
+  binding state active;
+  next binding state free;
+  hardware ethernet 00:00:00:00:00:22;
+  option agent.circuit-id "ap-central";
+}
+lease 172.22.33.203 {
+  starts 0 2012/03/25 08:47:12;
+  ends 0 2012/03/25 09:47:12;
+  tstp 0 2012/03/25 09:47:12;
+  binding state free;
+  hardware unknown-31 00:00:00:00:00:23;
+}
+lease 172.22.33.149 {
+  starts 4 2012/03/29 10:46:49;
+  ends 4 2012/03/29 11:46:49;
+  tstp 4 2012/03/29 11:46:49;
+  binding state free;
+  hardware unknown-31 00:00:00:00:00:24;
+}
