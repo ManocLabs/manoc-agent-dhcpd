@@ -4,9 +4,8 @@ import re
 import time
 import ConfigParser
 import json
-
-#from manoc_agents.common.requests import GET
-
+from manoc_agents.common import requests
+from manoc_agents.common.requests import HTTPError
 class DHCPReservation(object):
    
     def __init__(self, name, hostname, ipaddr, hwaddr):
@@ -21,7 +20,6 @@ class DHCPReservation(object):
     def __repr__(self):
         return "DHCPReservation(%s,%s,%s,%s)" % \
             (self.name, self.hostname, self.ipaddr, self.hwaddr)
-
     
     class Encoder(json.JSONEncoder):
         def default(self, obj):
@@ -165,32 +163,54 @@ class DHCPAgentConfig(object):
             import os
             hostname = os.uname()[1]
         return hostname
+  
+    @property
+    def username(self):
+       return self._config.get('DHCP', 'username')
+    @property
+    def password(self):
+       return self._config.get('DHCP', 'password')
+    @property
+    def start_url(self):
+       return self._config.get('DHCP', 'start_url')
 
-
-def main():
-    #read configuration
-    config = DHCPAgentConfig()
-    server_name = config.server_name
+class DHCPAgent(object):
     
-    parser = DHCPConfParser()
-    parser.read(config.dhcp_conf_file)
-    reservations = parser.parse_reservation()
-    print "Reservations"
-    print json.dumps(reservations,cls=DHCPReservation.Encoder)
+    UPDATE_STATUS_SUCCESS = 'success'
+    UPDATE_STATUS_WORKING = 'working'
+    UPDATE_STATUS_ERROR   = 'error'
+    UPDATE_STATUS_UNKNOWN = 'unknown'
+    UPDATE_STATUS_TIMEOUT = 'timeout'
+    UPDATE_STATUS_HTTP_ERROR = 'connection error'
 
-    parser = DHCPLeasesParser()
-    parser.read(config.dhcp_leases_file)
-    leases = parser.parse_leases()
-    print "Leases"
-    #print '\n'.join([ str(l) for l in leases])
-    print json.dumps(leases,cls=DHCPLease.Encoder)
+    def __init__(self,config):
+        self.config = config
 
-
-    
-
-if __name__ == '__main__':
-  main()
-
-
-
+    def start_update(self):
+        """Call the  service to update all the profiles, return True if the
+        service returns success.
+        """
+        parser = DHCPLeasesParser()
+        parser.read(self.config.dhcp_leases_file)
+        leases = parser.parse_leases()
+        data   = "\""+self.config.server_name + "\" , "+ \
+                       json.dumps(leases,cls=DHCPLeases.Encoder)
+        try:
+            url = self.config.start_url
+            print("calling url %s", url)
+            auth=(self.config.username, self.config.password)
+            r = requests.GET(url, auth, data)
+          
+            data = r.json()
+            
+            print("response: %s", str(data))
+            if data.get('successful', False):
+                self.status = self.UPDATE_STATUS_WORKING
+                return True
+            else:
+                self.status = self.ERROR
+                return False
+        except HTTPError:
+                self.status = self.UPDATE_STATUS_HTTP_ERROR
+                return False
 
