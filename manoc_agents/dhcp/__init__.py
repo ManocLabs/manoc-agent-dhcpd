@@ -4,9 +4,8 @@ import re
 import time
 import ConfigParser
 import json
-
-#from manoc_agents.common.requests import GET
-
+from manoc_agents.common import requests
+from manoc_agents.common.requests import HTTPError
 class DHCPReservation(object):
    
     def __init__(self, name, hostname, ipaddr, hwaddr):
@@ -21,11 +20,10 @@ class DHCPReservation(object):
     def __repr__(self):
         return "DHCPReservation(%s,%s,%s,%s)" % \
             (self.name, self.hostname, self.ipaddr, self.hwaddr)
-
     
     class Encoder(json.JSONEncoder):
         def default(self, obj):
-            return obj.name,obj.hwaddr,obj.ipaddr,obj.hostname  
+            return obj.hwaddr,obj.ipaddr,obj.hostname,obj.name
 
 
 class DHCPConfParser(object):
@@ -90,9 +88,9 @@ class DHCPLeases(object):
     class Encoder(json.JSONEncoder):
  
         def default(self, obj):
-            return obj.ipaddr,self.__to_unixtime(obj.start),\
-                self.__to_unixtime(obj.end),obj.status,\
-                obj.macaddr.lower(),obj.hostname    
+            return obj.macaddr.lower(), obj.ipaddr, \
+                self.__to_unixtime(obj.start), \
+                self.__to_unixtime(obj.end), obj.hostname, obj.status
 
         def __to_unixtime(self,date):
             return int(time.mktime(date))
@@ -165,32 +163,86 @@ class DHCPAgentConfig(object):
             import os
             hostname = os.uname()[1]
         return hostname
+  
+    @property
+    def username(self):
+       return self._config.get('DHCP', 'username')
+    @property
+    def password(self):
+       return self._config.get('DHCP', 'password')
+    @property
+    def start_url(self):
+       return self._config.get('DHCP', 'start_url')
 
-
-def main():
-    #read configuration
-    config = DHCPAgentConfig()
-    server_name = config.server_name
+class DHCPAgent(object):
     
-    parser = DHCPConfParser()
-    parser.read(config.dhcp_conf_file)
-    reservations = parser.parse_reservation()
-    print "Reservations"
-    print json.dumps(reservations,cls=DHCPReservation.Encoder)
+    UPDATE_STATUS_SUCCESS = 'success'
+    UPDATE_STATUS_WORKING = 'working'
+    UPDATE_STATUS_ERROR   = 'error'
+    UPDATE_STATUS_UNKNOWN = 'unknown'
+    UPDATE_STATUS_TIMEOUT = 'timeout'
+    UPDATE_STATUS_HTTP_ERROR = 'connection error'
 
-    parser = DHCPLeasesParser()
-    parser.read(config.dhcp_leases_file)
-    leases = parser.parse_leases()
-    print "Leases"
-    #print '\n'.join([ str(l) for l in leases])
-    print json.dumps(leases,cls=DHCPLease.Encoder)
+    @property
+    def leases(self):
+        parser = DHCPLeasesParser()
+        parser.read(self.config.dhcp_leases_file)
+        leases = parser.parse_leases()
+        return leases
+
+    @property
+    def reservations(self):
+        parser = DHCPConfParser()
+        parser.read(self.config.dhcp_conf_file)
+        res = parser.parse_reservation()
+        return res
+
+    def __init__(self,config):
+        self.config = config
+        self.auth   = (self.config.username, self.config.password)
+
+    def update_leases(self):
+        lease_url = self.config.start_url + 'dhcp/lease'
+        data = {
+            'server' : self.config.server_name,
+            'leases' : self.leases
+        }    
+        json_data = json.dumps(data, cls=DHCPLeases.Encoder)
+        r = requests.GET(lease_url, self.auth, json_data)
+        return r.json()
+        
+    def update_conf(self):
+        conf_url = self.config.start_url + 'dhcp/reservation'
+        data = {
+            'server' : self.config.server_name,
+            'reservations' : self.reservations
+        }    
+        json_data = json.dumps(data, cls=DHCPReservation.Encoder)
+        
+        r = requests.GET(conf_url, self.auth, json_data)
+        return r.json()
 
 
-    
+    def start_update(self):
+        """Call the  service to update all the profiles, return True if the
+        service returns success.
+        """
+               
+        try:
+            response = self.update_conf()  
+            print("response to reservation request: %s", str(response))
+         
+            response = self.update_leases()  
+            print("response to lease request: %s", str(response))
 
-if __name__ == '__main__':
-  main()
-
-
-
+            if response.get('successful', False):
+                self.status = self.UPDATE_STATUS_WORKING
+                #return True
+            else:
+                self.status = self.UPDATE_STATUS_ERROR
+                #return False
+            
+        except HTTPError:
+            self.status = self.UPDATE_STATUS_HTTP_ERROR
+            return False
 
