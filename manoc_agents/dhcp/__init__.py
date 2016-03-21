@@ -23,7 +23,7 @@ class DHCPReservation(object):
     
     class Encoder(json.JSONEncoder):
         def default(self, obj):
-            return obj.name,obj.hwaddr,obj.ipaddr,obj.hostname  
+            return obj.hwaddr,obj.ipaddr,obj.hostname,obj.name
 
 
 class DHCPConfParser(object):
@@ -88,9 +88,9 @@ class DHCPLeases(object):
     class Encoder(json.JSONEncoder):
  
         def default(self, obj):
-            return obj.ipaddr,self.__to_unixtime(obj.start),\
-                self.__to_unixtime(obj.end),obj.status,\
-                obj.macaddr.lower(),obj.hostname    
+            return obj.macaddr.lower(), obj.ipaddr, \
+                self.__to_unixtime(obj.start), \
+                self.__to_unixtime(obj.end), obj.hostname, obj.status
 
         def __to_unixtime(self,date):
             return int(time.mktime(date))
@@ -183,34 +183,66 @@ class DHCPAgent(object):
     UPDATE_STATUS_TIMEOUT = 'timeout'
     UPDATE_STATUS_HTTP_ERROR = 'connection error'
 
+    @property
+    def leases(self):
+        parser = DHCPLeasesParser()
+        parser.read(self.config.dhcp_leases_file)
+        leases = parser.parse_leases()
+        return leases
+
+    @property
+    def reservations(self):
+        parser = DHCPConfParser()
+        parser.read(self.config.dhcp_conf_file)
+        res = parser.parse_reservation()
+        return res
+
     def __init__(self,config):
         self.config = config
+        self.auth   = (self.config.username, self.config.password)
+
+    def update_leases(self):
+        lease_url = self.config.start_url + 'dhcp/lease'
+        data = {
+            'server' : self.config.server_name,
+            'leases' : self.leases
+        }    
+        json_data = json.dumps(data, cls=DHCPLeases.Encoder)
+        r = requests.GET(lease_url, self.auth, json_data)
+        return r.json()
+        
+    def update_conf(self):
+        conf_url = self.config.start_url + 'dhcp/reservation'
+        data = {
+            'server' : self.config.server_name,
+            'reservations' : self.reservations
+        }    
+        json_data = json.dumps(data, cls=DHCPReservation.Encoder)
+        
+        r = requests.GET(conf_url, self.auth, json_data)
+        return r.json()
+
 
     def start_update(self):
         """Call the  service to update all the profiles, return True if the
         service returns success.
         """
-        parser = DHCPLeasesParser()
-        parser.read(self.config.dhcp_leases_file)
-        leases = parser.parse_leases()
-        data   = "\""+self.config.server_name + "\" , "+ \
-                       json.dumps(leases,cls=DHCPLeases.Encoder)
+               
         try:
-            url = self.config.start_url
-            print("calling url %s", url)
-            auth=(self.config.username, self.config.password)
-            r = requests.GET(url, auth, data)
-          
-            data = r.json()
-            
-            print("response: %s", str(data))
-            if data.get('successful', False):
+            response = self.update_conf()  
+            print("response to reservation request: %s", str(response))
+         
+            response = self.update_leases()  
+            print("response to lease request: %s", str(response))
+
+            if response.get('successful', False):
                 self.status = self.UPDATE_STATUS_WORKING
-                return True
+                #return True
             else:
-                self.status = self.ERROR
-                return False
+                self.status = self.UPDATE_STATUS_ERROR
+                #return False
+            
         except HTTPError:
-                self.status = self.UPDATE_STATUS_HTTP_ERROR
-                return False
+            self.status = self.UPDATE_STATUS_HTTP_ERROR
+            return False
 
