@@ -4,6 +4,7 @@ import time
 import json
 
 from .parser import DHCPConfParser, DHCPLeasesParser
+from manoc_agents.common import requests
 from manoc_agents.common.requests import HTTPError
 from manoc_agents.common.config import AgentConfig
 
@@ -59,10 +60,10 @@ class DHCPAgent(object):
     def reservations_dict(self):
         [
             {
-                'hwaddr'   : l.hwaddr,
-                'ipaddr'   : l.ipaddr,
-                'hostname' : l.hostname,
-                'name'     : l.name
+                'hwaddr'   : r.hwaddr,
+                'ipaddr'   : r.ipaddr,
+                'hostname' : r.hostname,
+                'name'     : r.name
             }
             for r in self.reservations
         ]
@@ -73,8 +74,8 @@ class DHCPAgent(object):
             'server' : self.config.server_name,
             'leases' : self.leases_dict()
         }    
-        json_data = json.dumps(data, cls=DHCPLeases.Encoder)
-        r = requests.GET(lease_url, self.auth, json=data)
+        json_data = json.dumps(data)
+        r = requests.POST(lease_url, self.auth, json=data)
         return r.json()
         
     def update_reservations(self):
@@ -84,6 +85,6 @@ class DHCPAgent(object):
             'reservations' : self.reservations_dict()
         }    
         
-        r = requests.GET(conf_url, self.auth, json=data)
+        r = requests.POST(conf_url, self.auth, json=data)
         return r.json()
 
