@@ -1,6 +1,6 @@
 import urllib2
 import base64
-import json
+import json as json_module
 
 class PreemptiveBasicAuthHandler(urllib2.HTTPBasicAuthHandler):
     '''Preemptive basic auth.
@@ -29,7 +29,6 @@ class RequestException(IOError):
 
     response = None
     request = None
-
     def __init__(self, *args, **kwargs):        
         self.response = kwargs.pop('response', None)
         self.request = kwargs.pop('request', None)
@@ -49,7 +48,6 @@ class Response():
 
         # defaults
         method = method.upper()
-        data = [] if data is None else data
         headers = {} if headers is None else headers
         params = {} if params is None else params
 
@@ -57,14 +55,13 @@ class Response():
         content_type = None
         if not data and json is not None:
             content_type = 'application/json'
-            data = json.dumps(json)
+            data = json_module.dumps(json)
 
         # Add content-type if it wasn't explicitly provided.
-        if content_type and ('content-type' not in self.headers):
-            self.headers['Content-Type'] = content_type
+        if content_type and ('content-type' not in headers):
+            headers['Content-Type'] = content_type
 
-        
-        req = urllib2.Request(url, headers)    
+        req = urllib2.Request(url, headers=headers)
         if data:
             req.add_data(data)
         
@@ -76,9 +73,10 @@ class Response():
             opener = urllib2.build_opener(auth_manager).open
         else:
             opener = urllib2.urlopen
-      
+            
         self.request = req
-        self._opener = opener    
+        self._opener = opener
+        self._code = None
         self._data = None
         self._is_error = False
         self._handler = None  
@@ -90,10 +88,9 @@ class Response():
     def code(self):
         if self._code:
             return self._code
-        elif self._handler:
-            return self._handler.getcode()
-        else:
-            return None 
+
+        self.read()
+        return self._code
             
     def header(self, name):
         return self._handler.headers.getheader(name) 
@@ -104,7 +101,8 @@ class Response():
         if self._data is None:
             try:
                 self._handler = self._opener(self.request)    
-                self._data = self._handler.read() 
+                self._data = self._handler.read()
+                self._code = self._handler.getcode()
             except urllib2.HTTPError as e:
                 self._code = e.code 
                 self._is_error = True
@@ -117,11 +115,13 @@ class Response():
         return self._data        
     
     def json(self):        
-        return json.loads(self.read()) 
-    
+        return json_module.loads(self.read()) 
+
+    def data(self):
+        return self.read()
     
 def GET(url, **kwargs):
-    return Response('get', url, *args, **kwargs)
+    return Response('get', url, **kwargs)
 
 def POST(url, data=None, json=None,  **kwargs):
     return Response('post', url, data=data, json=json, **kwargs)
