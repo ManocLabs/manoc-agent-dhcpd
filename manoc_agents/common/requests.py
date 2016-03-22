@@ -44,8 +44,27 @@ class HTTPError(RequestException):
     
 class Response():
     
-    def __init__(self, url, auth=None, data=None):        
-        req = urllib2.Request(url)    
+    def __init__(self, method=None, url=None, headers=None,
+                 data=None, params=None, auth=None, json=None):
+
+        # defaults
+        method = method.upper()
+        data = [] if data is None else data
+        headers = {} if headers is None else headers
+        params = {} if params is None else params
+
+        body = None
+        content_type = None
+        if not data and json is not None:
+            content_type = 'application/json'
+            data = json.dumps(json)
+
+        # Add content-type if it wasn't explicitly provided.
+        if content_type and ('content-type' not in self.headers):
+            self.headers['Content-Type'] = content_type
+
+        
+        req = urllib2.Request(url, headers)    
         if data:
             req.add_data(data)
         
@@ -101,10 +120,9 @@ class Response():
         return json.loads(self.read()) 
     
     
-def GET(url, *args, **kwargs):
-    return Response(url, *args, **kwargs)
+def GET(url, **kwargs):
+    return Response('get', url, *args, **kwargs)
 
-def POST(url, data, *args, **kwargs):
-    kwargs['data'] = data
-    return Response(url, *args, **kwargs)
+def POST(url, data=None, json=None,  **kwargs):
+    return Response('post', url, data=data, json=json, **kwargs)
 
