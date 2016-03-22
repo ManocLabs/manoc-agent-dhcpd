@@ -81,5 +81,5 @@ setup(
     ),
 
     cmdclass = {'test': PyTest},    
-    tests_require = ['pytest>=2.8.0', 'pytest-httpbin>=0.2.3' ],
+    tests_require = ['pytest', 'pytest-httpbin' ],
 )
