@@ -55,22 +55,22 @@ class DHCPConfParser(object):
 
 class DHCPLeases(object):
    
-    def __init__(self, ipaddr, start, end, status, macaddr, hostname):
+    def __init__(self, ipaddr, start, end, status, hwaddr, hostname):
         self.ipaddr   = ipaddr 
         self.start    = time.strptime(start, "%Y/%m/%d %H:%M:%S")
         self.end      = time.strptime(end, "%Y/%m/%d %H:%M:%S")
         self.status   = status or ''
-        self.macaddr  = macaddr or ''
+        self.hwaddr  = hwaddr or ''
         self.hostname = hostname or ''
    
     def __str__(self):
         return "%s(%s) %s: start:%s end:%s status:%s" % \
-            (self.ipaddr, self.macaddr, self.hostname, self.start, self.end, self.status)
+            (self.ipaddr, self.hwaddr, self.hostname, self.start, self.end, self.status)
 
     def __repr__(self):
         return "DHCPLeases(%s,%s,%s,%s,%s,%s)" % \
             (self.ipaddr,  self.start,  self.end,  \
-             self.status, self.macaddr, self.hostname)
+             self.status, self.hwaddr, self.hostname)
 
 class DHCPLeasesParser(object):
     leases_re = re.compile(r"""
@@ -86,7 +86,7 @@ class DHCPLeasesParser(object):
             |
               binding\ state\s+(?P<status>\w+)
             |
-              hardware\ \S+\ (?P<macaddr>(?:[0-9a-f]{2}:){5}[0-9a-f]{2})
+              hardware\ \S+\ (?P<hwaddr>(?:[0-9a-f]{2}:){5}[0-9a-f]{2})
             |
               client-hostname\s+"(?P<hostname>.*)"
             |
