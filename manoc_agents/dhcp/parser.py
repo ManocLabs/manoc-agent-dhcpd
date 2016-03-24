@@ -46,7 +46,7 @@ class DHCPConfParser(object):
         self._text = text
 
 
-    def parse_reservation(self):
+    def parse_reservations(self):
         result_list = []
 
         for match in self.res_re.finditer(self._text):

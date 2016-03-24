@@ -24,7 +24,7 @@ class PreemptiveBasicAuthHandler(urllib2.HTTPBasicAuthHandler):
     https_request = http_request
     
 
-class RequestException(IOError):
+class RequestError(Exception):
     """A generic Exception while processing the request."""
 
     response = None
@@ -35,9 +35,17 @@ class RequestException(IOError):
         if self.response is not None and self.request is None:
             if hasattr(self.response, 'request'):
                 self.request = self.response.request            
-        super(RequestException, self).__init__(*args, **kwargs)       
-        
-class HTTPError(RequestException):
+        super(RequestError, self).__init__(*args, **kwargs)       
+
+    def __str__(self):
+        msg = "RequestError"
+        if self.request:
+            msg = msg + " request="+str(self.request)
+        if self.response:
+            msg = msg + " response="+str(self.response)
+        return msg
+            
+class HTTPError(RequestError):
     """An HTTP error occurred."""
     pass
     
@@ -100,7 +108,7 @@ class Response():
             return None
         if self._data is None:
             try:
-                self._handler = self._opener(self.request)    
+                self._handler = self._opener(self.request)
                 self._data = self._handler.read()
                 self._code = self._handler.getcode()
             except urllib2.HTTPError as e:
@@ -109,7 +117,7 @@ class Response():
                 raise HTTPError(response=self)
             except:
                 self._is_error = True
-                raise  RequestException(response=self)
+                raise
             if self._raise_on_http_error and self._handler.getcode() != 200:
                 raise HTTPError(response=self)
         return self._data        
